@@ -11,13 +11,19 @@ import java.util.List;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3010")
-@RequestMapping("/api/v1/carts")
+@RequestMapping("/api/v1")
 public class CartController {
 
     @Autowired
     CartService cartService;
 
-    @PatchMapping("/{id}")
+    @GetMapping("/carts/{id}")
+    public List<CartItem> getCartContents(@PathVariable Integer id) {
+        return cartService.getCart();
+    }
+
+
+    @PatchMapping("/carts/{id}")
     public ResponseEntity<HttpStatus> updateCart(@PathVariable int id, @RequestParam("action") String action, @RequestBody CartItem item) {
         switch (action) {
             case "add":
@@ -31,11 +37,12 @@ public class CartController {
         }
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<HttpStatus> clearCartContents(@PathVariable int id, @RequestParam(value = "buyout", required = false) Boolean buyout) {
-        if (buyout == null || !buyout) {
-            cartService.clearCart(buyout);
-        }
+    @DeleteMapping("/carts/{id}")
+    public ResponseEntity<HttpStatus> clearCartContents(@PathVariable int id, @RequestParam(value = "buyout", required = false) boolean buyout) {
+        cartService.clearCart(!buyout);
+        //if (buyout == null || !buyout) {
+        //    cartService.clearCart(true);
+        //} else cartService.clearCart(false);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

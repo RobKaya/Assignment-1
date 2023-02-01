@@ -24,7 +24,7 @@ public class Product implements Serializable
         @JsonProperty("previewImage")
         public String previewImage;
 
-        @JsonProperty("variants")
+        @JsonProperty("colorVariants")
         public List<ColorVariant> colorVariants;
 
         public Product() {

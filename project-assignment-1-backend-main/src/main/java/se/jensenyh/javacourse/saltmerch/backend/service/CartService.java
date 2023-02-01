@@ -13,6 +13,9 @@ public class CartService {
     @Autowired
     CartRepository cartRepository;
 
+    public List<CartItem> getCart() {
+        return cartRepository.selectAllItems();
+    }
 
     public void addItem(CartItem item) {
         cartRepository.insertOrIncrementItem(item);

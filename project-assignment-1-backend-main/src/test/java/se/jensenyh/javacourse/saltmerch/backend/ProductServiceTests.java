@@ -1,23 +1,19 @@
 package se.jensenyh.javacourse.saltmerch.backend;
 
+import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.verify;
 
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.beans.factory.annotation.Autowired;
 import se.jensenyh.javacourse.saltmerch.backend.model.Product;
 import se.jensenyh.javacourse.saltmerch.backend.repository.ProductRepository;
 import se.jensenyh.javacourse.saltmerch.backend.service.ProductService;
-
 import java.util.Arrays;
 import java.util.List;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -55,10 +51,5 @@ public class ProductServiceTests {
 
         assertEquals("Paintings", result.get(0).category);
         assertEquals("Cloths", result.get(1).category);
-    }
-
-    @Test
-    public void testGetProductById() {
-
     }
 }

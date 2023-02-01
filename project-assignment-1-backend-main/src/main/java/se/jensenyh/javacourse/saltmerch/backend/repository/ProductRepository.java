@@ -1,30 +1,25 @@
 package se.jensenyh.javacourse.saltmerch.backend.repository;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.stereotype.Repository;
-import se.jensenyh.javacourse.saltmerch.backend.model.CartItem;
 import se.jensenyh.javacourse.saltmerch.backend.model.ColorVariant;
 import se.jensenyh.javacourse.saltmerch.backend.model.Product;
 import se.jensenyh.javacourse.saltmerch.backend.model.SizeContainer;
-
 
 @Repository
 public class ProductRepository
 {
     @Autowired
     JdbcTemplate jdbcTemplate;
-
     // NOTE: LEAVE THIS RECORD AS IT IS!
     private record VariantWImages(int id, String colorName, String imagesCsv) {}
 
@@ -32,11 +27,9 @@ public class ProductRepository
 
     /** Only calls selectAll(String category) with a null category;
      * Useful for reading ALL products, regardless of category. */
-
     public List<Product> selectAll()
     {
         return selectAll(null);
-
     }
 
     // todo: this method needs you to write its SQL query
@@ -92,7 +85,7 @@ public class ProductRepository
                 VALUES (?, ?, ?, ?) RETURNING id;""";
         RowMapper<Integer> rm = (rs, rowNum) -> rs.getInt("id");
         List<Integer> pids = jdbcTemplate.query(sql, rm, category, prod.title,
-                prod.description, prod.previewImage);
+                                                prod.description, prod.previewImage);
         int pid = pids.size() > 0 ? pids.get(0) : -1;
 
         Product newProd = null;
@@ -324,7 +317,11 @@ public class ProductRepository
     private Product getProductBase(int productId)
     {
         RowMapper<Product> rm = (rs, rowNum) -> new Product(
-        );
+                rs.getInt("id"),
+                rs.getString("category"),
+                rs.getString("title"),
+                rs.getString("description"),
+                rs.getString("preview_image"));
         var sql = "SELECT * FROM products WHERE id = ?";
         List<Product> products = jdbcTemplate.query(sql, rm, productId);
         return products.size() > 0 ? products.get(0) : null;
